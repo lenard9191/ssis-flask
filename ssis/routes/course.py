@@ -49,3 +49,37 @@ def course_delete():
             'error' : error
         })
 
+
+@course_bp.route("/course/edit", methods=['GET', 'POST'])
+def course_edit():
+    pastcode = request.form.get('code')
+    code = request.form.get('edit_course_code')
+    name = request.form.get('edit_course_name')
+    college_code = request.form.get('edit_course_college')
+    error = f"CODE: {pastcode} {code} {name} {college_code}"
+
+    course = Course.get_one(pastcode)
+
+    if code != pastcode:
+        exist_course_code = Course.get_one(code)
+        if exist_course_code:
+            error = f'Course Code: {code} is already taken'
+            return jsonify({'error' : error})
+        else:
+            try:
+                course = Course(code=code,name=name,college_code=college_code) 
+                course.update(pastcode)    
+                return redirect(url_for("course_bp.course"))       
+            except Exception as e:
+                return jsonify({'error' : e})
+    else:
+        try:
+            course.name = name
+            course.college_code = college_code
+            course.update(code)
+            return redirect(url_for("course_bp.course"))  
+        except Exception as e:
+            return jsonify({
+                'error' : e
+            })
+
