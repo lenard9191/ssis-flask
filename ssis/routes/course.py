@@ -12,4 +12,40 @@ course_bp = Blueprint(
 
 @course_bp.route("/course", methods=['GET', 'POST'])
 def course():
-    return render_template('course_home.html')
+    colleges = College.get_all()
+    courses = Course.get_all()
+    return render_template('course_home.html', colleges=colleges, courses=courses)
+
+
+@course_bp.route("/course/add", methods=['GET', 'POST'])
+def course_add():
+    code = request.form.get('code')
+    name = request.form.get('name')
+    college_code = request.form.get('college_code')
+    exist_course = Course.check_existing_code(code)
+    if exist_course:
+        error = f'Course Code: {code} is already taken'
+        return jsonify({'error' : error})
+    else:
+        try:
+            course = Course(code=code,name=name,college_code=college_code)
+            course.add()
+            return redirect(url_for("course_bp.course"))
+        except Exception as e:
+            return jsonify({'error' : e})
+  
+
+@course_bp.route("/course/delete", methods=['GET', 'POST'])
+def course_delete():
+    try:
+        code = request.form.get('csasdsda')
+        course = Course.get_one(code)
+        course.delete()
+        return redirect(url_for("course_bp.course"))
+
+    except Exception as e:
+        error = f"Error: {e}"
+        return jsonify({
+            'error' : error
+        })
+
