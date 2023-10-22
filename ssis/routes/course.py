@@ -83,3 +83,23 @@ def course_edit():
                 'error' : e
             })
 
+@course_bp.route("/course/search", methods=['GET','POST'])
+def course_search():
+    input = request.args.get("querycourse")
+    filter = request.args.get("filter_course")
+    if input:
+        courses = Course.search(input,filter)
+        if not courses:
+            filter_message = ""
+            if filter == "0":
+                filter_message = "Course Code or Course name or Course College Code"
+            elif filter == "1":
+                filter_message = "Course Code"
+            elif filter == "2":
+                filter_message = "ourse name"
+            elif filter == "3":
+                filter_message = "Course College Code"
+            return render_template('course_home.html', courseInput = input, search = True, hideAdd = True, filter_message=filter_message)
+        else:
+            return render_template('course_home.html', courses=courses, courseInput = input , hideAdd=True,search = True)
+    return redirect(url_for('course_bp.course'))

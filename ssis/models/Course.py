@@ -35,14 +35,22 @@ class Course():
         cursor.close()
 
     @classmethod
-    def search(cls, input):
+    def search(cls, input, filter):
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM course WHERE code LIKE %s OR name LIKE %s OR college_code LIKE %s", (f"%{input}%",f"%{input}%",f"%{input}%"))
         coursess = []
+
+        if filter == "0":
+            cursor.execute("SELECT * FROM course WHERE code LIKE %s OR name LIKE %s OR college_code LIKE %s", (f"%{input}%", f"%{input}%", f"%{input}%"))
+        elif filter == "1":
+            cursor.execute("SELECT * FROM course WHERE code LIKE %s", (f"%{input}%",))
+        elif filter == "2":
+            cursor.execute("SELECT * FROM course WHERE name LIKE %s", (f"%{input}%",))
+        elif filter == "3":
+            cursor.execute("SELECT * FROM course WHERE college_code LIKE %s", (f"%{input}%",))
         for courses_data in cursor.fetchall():
-            courses = Course(code = courses_data[0] , name = courses_data[1], college_code=courses_data[2],)
+            courses = Course(code=courses_data[0], name=courses_data[1], college_code=courses_data[2])
             coursess.append(courses)
-        cursor.close
+        cursor.close()
 
         return coursess
 
