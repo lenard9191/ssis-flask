@@ -53,9 +53,14 @@
         <td>
         </td>
         <td>
+          <button type="button" class="btn btn-outline-danger delete-College" data-bs-toggle="modal"
+            data-bs-target="#deleteCollege" data-college-code="{{college.code}}">
+            Delete Course
+          </button>
         </td>
       </tr>
     </tbody>
+    {% include 'college_delete.html' %}
      {%
     endfor %}
   </table>

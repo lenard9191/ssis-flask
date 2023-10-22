@@ -24,7 +24,27 @@ $(document).ready(function () {
     });
 
 
+    $(".delete-College").click(function ( ) {
+        var collegeCode = $(this).data("college-code")
 
+        $("#deleteCollegeForm").click(function () {
+            $.ajax({
+                type : "POST",
+                url: "college/delete",
+                data: {
+                    code : collegeCode
+                }
+            }).done( function (data) {
+                if (data.error) {
+                    $("#errorcoldeletemsg").text(data.error).show();
+                }
+                else {
+                    alert("Succesfully deleted coursE:" + collegeCode)
+                    window.location.href = "/college"
+                }
+            });
+        });
+    });
 
 
 });

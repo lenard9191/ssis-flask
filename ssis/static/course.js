@@ -28,7 +28,7 @@ $(document).ready(function () {
             $.ajax({
                 type: "POST",
                 url: "/course/delete",
-                data: { csasdsda: courseCode },
+                data: { csasdsda: courseCode }
             }).done(function (data) {
                 if (data.error) {
                     $("#errordeletemsg").text(data.error).show();

@@ -8,7 +8,7 @@ college_bp = Blueprint(
     __name__,
 )
 
-@college_bp.route("/college")
+@college_bp.route("/college", methods=['GET','POST'])
 def college():
     colleges = College.get_all()
     return render_template('college_home.html', colleges=colleges)
@@ -54,3 +54,16 @@ def college_add():
             return jsonify({
                 'error' : e
             })
+        
+@college_bp.route("/college/delete", methods=['POST'])
+def college_delete():
+    code = request.form.get("code")
+
+    try:
+        college = College.get_one(code)
+        college.delete()
+        return redirect(url_for("college_bp.college"))
+        
+    except Exception as e:
+        error = f"Error: {e}"
+        return jsonify({ 'error' : error})
