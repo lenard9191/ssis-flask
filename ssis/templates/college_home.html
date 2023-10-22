@@ -13,17 +13,17 @@
       Add College
     </button>
     {% endif %}
-    <form action="{{ url_for('college_bp.college_search') }}" style="width: 50%;" >
-        
-        <div class="form-floating">
-            <select class="form-select" style="width: 50%;" aria-label="Default select example" id="filter_college" name="filter_college">
-                <option selected value="0">All</option>
-                <option value="1">College Code</option>
-                <option value="2">College Name</option>
-              </select>
-              <label for="filter_college" class="text-secondary-emphasis fw-bold"
-              >Search By</label>
-          </div>
+    <form action="{{ url_for('college_bp.college_search') }}" style="width: 50%;">
+
+      <div class="form-floating">
+        <select class="form-select" style="width: 50%;" aria-label="Default select example" id="filter_college"
+          name="filter_college">
+          <option selected value="0">All</option>
+          <option value="1">College Code</option>
+          <option value="2">College Name</option>
+        </select>
+        <label for="filter_college" class="text-secondary-emphasis fw-bold">Search By</label>
+      </div>
       <div class="form-floating">
         <input name="querycollege" class="form-control" id="searchBar" placeholder="Search">
         <label for="searchBar">Search</label>
@@ -51,17 +51,22 @@
         <th scope="row">{{college.code}}</th>
         <th scope="row">{{college.name}}</th>
         <td>
+          <button type="button" class="btn btn-outline-secondary edit-College" data-bs-toggle="modal"
+          data-bs-target="#editCollege" data-college-code="{{college.code}}" data-college-name="{{college.name}}">
+          Edit College
+        </button>
         </td>
         <td>
-          <button type="button" class="btn btn-outline-danger delete-College" data-bs-toggle="modal"
+          <button type=" button" class="btn btn-outline-danger delete-College" data-bs-toggle="modal"
             data-bs-target="#deleteCollege" data-college-code="{{college.code}}">
-            Delete Course
+            Delete College
           </button>
         </td>
       </tr>
     </tbody>
     {% include 'college_delete.html' %}
-     {%
+    {% include 'college_edit.html'%}
+    {%
     endfor %}
   </table>
   {% elif collegeInput %}

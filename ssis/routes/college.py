@@ -61,3 +61,31 @@ def college_delete():
     except Exception as e:
         error = f"Error: {e}"
         return jsonify({ 'error' : error})
+    
+
+@college_bp.route("/college/edit", methods=['POST'])
+def college_edit():
+    pastcode = request.form.get('code')
+    code = request.form.get('edit_college_code')
+    name = request.form.get('edit_college_name')
+
+    error = f"CODE: {pastcode} {code} {name}"
+
+    college = College.get_one(pastcode)
+
+    if code != pastcode:
+        exist_college = College.get_one(code)
+        if exist_college:
+            error = f"College COde: {code} already taken"
+            return jsonify({'error' : error})
+        else:
+            college = College(code=code,name=name)
+            college.update(pastcode)
+            return redirect(url_for("college_bp.college"))
+    else:
+        try:
+            college.name = name
+            college.update(code)
+            return redirect(url_for('college_bp.college'))
+        except Exception as e:
+            return jsonify({'error' : e})

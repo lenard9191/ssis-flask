@@ -46,5 +46,37 @@ $(document).ready(function () {
         });
     });
 
+    $('.edit-College').on("click", function(event) {
+        var collegecode = $(this).data('college-code')
+        var collegename = $(this).data('college-name')
+
+        $('#edit_college_code').val(collegecode)
+        $('#edit_college_name').val(collegename)
+
+        $("#editCollegeForm").on("submit", function (event) {
+            $.ajax({
+                data: {
+                    code : collegecode,
+                    edit_college_code: $("#edit_college_code").val(),
+                    edit_college_name: $("#edit_college_name").val(),
+                },
+                type: "POST",
+                url: "/college/edit",
+            }).done(function (data) {
+                if (data.error) {
+                    $("#errorcollegeeditmsg").text(data.error).show();
+                }
+                else {
+                    alert("Successfully edited college")
+                    window.location.href = "/college"
+                }
+            });
+            event.preventDefault();
+        });
+        
+
+
+    });
+
 
 });
