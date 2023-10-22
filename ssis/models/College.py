@@ -32,10 +32,16 @@ class College():
         cursor.close()
 
     @classmethod
-    def search(cls, input):
+    def search(cls, input,filter):
         cursor = mysql.connection.cursor()
-        cursor.execute("SELECT * FROM college WHERE code LIKE %s OR name LIKE %s", (f"%{input}%",f"%{input}%"))
         colleges = []
+
+        if filter == "0":
+            cursor.execute("SELECT * FROM college WHERE code LIKE %s OR name LIKE %s", (f"%{input}%",f"%{input}%"))
+        elif filter == "1":
+            cursor.execute("SELECT * FROM college WHERE code LIKE %s", (f"%{input}%",))
+        elif filter =="2":
+            cursor.execute("SELECT * FROM college WHERE name LIKE %s", (f"%{input}%",))
         for college_data in cursor.fetchall():
             college = College(code = college_data[0] , name = college_data[1])
             colleges.append(college)
