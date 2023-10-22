@@ -1,6 +1,6 @@
 from flask import Blueprint
 from flask import current_app as app
-from flask import render_template , request, redirect, url_for, session
+from flask import render_template, request, redirect, jsonify, url_for
 from ..models.College import College
 
 college_bp = Blueprint(
@@ -31,3 +31,26 @@ def college_search():
         else:
             return render_template('college_home.html', colleges=colleges, collegeInput = input , hideAdd=True,search = True)
     return redirect(url_for('college_bp.college'))
+
+
+@college_bp.route("/college/add", methods=['GET', 'POST'])
+def college_add():
+    code = request.form.get('code')
+    name = request.form.get('name')
+
+    exist_college = College.check_existing_code(code)
+    if exist_college:
+        error = f"College Code: {code} is already taken"
+        return jsonify({
+            'error' : error
+        })
+    
+    else:
+        try:
+            college = College(code=code,name=name)
+            college.add()
+            return redirect(url_for("college_bp.college"))
+        except Exception as e:
+            return jsonify({
+                'error' : e
+            })
