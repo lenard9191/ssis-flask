@@ -37,23 +37,17 @@ def college_search():
 def college_add():
     code = request.form.get('code')
     name = request.form.get('name')
-
     exist_college = College.check_existing_code(code)
     if exist_college:
         error = f"College Code: {code} is already taken"
-        return jsonify({
-            'error' : error
-        })
-    
+        return jsonify({'error' : error})
     else:
         try:
             college = College(code=code,name=name)
             college.add()
             return redirect(url_for("college_bp.college"))
         except Exception as e:
-            return jsonify({
-                'error' : e
-            })
+            return jsonify({'error' : e})
         
 @college_bp.route("/college/delete", methods=['POST'])
 def college_delete():
