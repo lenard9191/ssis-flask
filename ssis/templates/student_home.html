@@ -1,3 +1,90 @@
-{%  extends 'master_layout.html'%}
+{% extends "master_layout.html" %}
+{% block content %}
 
-<h1> STUDENT</h1>
+<div class="container">
+  <div class="d-flex justify-content-between align-items-center">
+    {% if search %}
+    <button id="gobackstudent" name="gobackstudent" type="button" class="btn btn-outline-dark">
+      Go Back
+    </button>
+    {% endif %}
+    {% if not hideAdd %}
+    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addStudent">
+      Add Student
+    </button>
+    {% endif %}
+    <form action="{{ url_for('course_bp.course_search') }}" style="width: 50%;" >
+        
+        <div class="form-floating">
+            <select class="form-select" style="width: 50%;" aria-label="Default select example" id="filter_course" name="filter_course">
+                <option selected value="0">All</option>
+                <option value="1">Course Code</option>
+                <option value="2">Course Name</option>
+                <option value="3">Course College Code</option>
+              </select>
+              <label for="filter_course" class="text-secondary-emphasis fw-bold"
+              >Search By</label>
+          </div>
+      <div class="form-floating">
+        <input name="querycourse" class="form-control" id="searchBar" placeholder="Search">
+        <label for="searchBar">Search</label>
+
+      </div>
+    </form>
+  </div>
+
+  {% include 'student_add.html'%}
+
+  {% include 'course_add.html'%} {% if courses %}
+  <h2>Student List</h2>
+  <table class="table table-light table-hover p-5">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Student ID</th>
+        <th scope="col">First Name</th>
+        <th scope="col">Last Name</th>
+        <th scope="col">Course Code</th>
+        <th scope="col">Year</th>
+        <th scope="col">Gender</th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    {% for student in students %}
+    <tbody>
+      <tr>
+        <th scope="row">{{ loop.index }}</th>
+        <th scope="row">{{student.id}}</th>
+        <th scope="row">{{student.firstname}}</th>
+        <th scope="row">{{student.lastname}}</th>
+        <th scope="row">{{student.course_code}}</th>
+        <th scope="row">{{student.year}}</th>
+        <th scope="row">{{student.gender}}</th>
+        <td>
+          
+        </td>
+        <td>
+          
+        </td>
+      </tr>
+    </tbody>
+ {%
+    endfor %}
+  </table>
+  {% elif studentInput %}
+  <div class="d-flex justify-content-between flex-column align-items-center">
+    <div class="alert alert-danger" role="alert">
+      Theres no {{filter_message}} Like: {{studentInput}}
+    </div>
+  </div>
+  {% else %}
+  <div class="d-flex justify-content-center">
+    <h1>Theres no Course yet</h1>
+  </div>
+
+  {% endif %}
+</div>
+
+<script src="{{ url_for('static', filename='student.js') }}"></script>
+{% endblock %}

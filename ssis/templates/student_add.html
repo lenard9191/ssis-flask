@@ -1,0 +1,140 @@
+<div
+  class="modal fade"
+  id="addStudent"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="addStudentLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="addStudentLabel">Add Student</h1>
+      </div>
+      <div class="modal-body">
+        <form id="addStudentForm" autocomplete="off">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="student_id"
+              name="student_id"
+              placeholder="Course Code"
+              required
+              value="{{ request.form['code'] }}"
+              maxlength="20"
+            />
+            <label for="student_id" class="text-secondary-emphasis fw-bold"
+              >Student Id</label
+            >
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="student_first_name"
+              name="student_first_name"
+              placeholder="Course name"
+              autocomplete="off"
+              required
+              value="{{ request.form['name'] }}"
+            />
+            <label for="student_first_name" class="text-secondary-emphasis fw-bold"
+              >Student First Name</label
+            >
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="student_last_name"
+              name="student_last_name"
+              placeholder="Course name"
+              autocomplete="off"
+              required
+              value="{{ request.form['name'] }}"
+            />
+            <label for="student_last_name" class="text-secondary-emphasis fw-bold"
+              >Student Last Name</label
+            >
+          </div>
+          <div
+          class="alert alert-danger"
+          id="erroraddstdmsg"
+          name="erroraddstdmsg"
+          role="alert"
+          style="display: none"
+        ></div>
+          <div class="form-floating mb-3">
+            <select
+              class="form-select"
+              id="student_course_code"
+              name="student_course_code"
+              aria-label="Floating label select example"
+              required
+            >
+              <option value="" selected disabled>Select</option>
+              {% for course in courses%}
+              <option value="{{course.code}}">{{course.code}}</option>
+              {% endfor %}
+            </select>
+            <label for="student_course_code" class="text-secondary-emphasis fw-bold"
+              >What Course</label
+            >
+          </div>
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="student_year"
+              name="student_year"
+              placeholder="Course name"
+              autocomplete="off"
+              required
+              value="{{ request.form['name'] }}"
+            />
+            <label for="student_year" class="text-secondary-emphasis fw-bold"
+              >Student Year</label
+            >
+          </div>
+          <div class="form-floating mb-3">
+            <select
+              class="form-select"
+              id="student_gender"
+              name="student_gender"
+              aria-label="Floating label select example"
+              required
+            >
+              <option value="" selected disabled>Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+            <label for="student_gender" class="text-secondary-emphasis fw-bold"
+              >Gender</label
+            >
+          </div>
+        </form>
+        
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-outline-dark fs-5"
+          data-bs-target="#addStudent"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
+        <button
+          type="submit"
+          form="addStudentForm"
+          class="btn btn-outline-primary fs-5"
+        >
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
