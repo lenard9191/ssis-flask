@@ -13,24 +13,7 @@
       Add Student
     </button>
     {% endif %}
-    <form action="{{ url_for('course_bp.course_search') }}" style="width: 50%;" >
-        
-        <div class="form-floating">
-            <select class="form-select" style="width: 50%;" aria-label="Default select example" id="filter_course" name="filter_course">
-                <option selected value="0">All</option>
-                <option value="1">Course Code</option>
-                <option value="2">Course Name</option>
-                <option value="3">Course College Code</option>
-              </select>
-              <label for="filter_course" class="text-secondary-emphasis fw-bold"
-              >Search By</label>
-          </div>
-      <div class="form-floating">
-        <input name="querycourse" class="form-control" id="searchBar" placeholder="Search">
-        <label for="searchBar">Search</label>
-
-      </div>
-    </form>
+  
   </div>
 
   {% include 'student_add.html'%}
@@ -65,10 +48,15 @@
           
         </td>
         <td>
+          <button type="button" class="btn btn-outline-danger delete-Student" data-bs-toggle="modal"
+          data-bs-target="#deleteStudent" data-student-id="{{student.id}}">
+          Delete Student
+        </button>
           
         </td>
       </tr>
     </tbody>
+    {% include 'student_delete.html'%}
  {%
     endfor %}
   </table>
@@ -80,7 +68,7 @@
   </div>
   {% else %}
   <div class="d-flex justify-content-center">
-    <h1>Theres no Course yet</h1>
+    <h1>Theres no Students yet</h1>
   </div>
 
   {% endif %}

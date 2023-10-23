@@ -50,3 +50,17 @@ def student_add():
                 'error' : e
             })
     
+
+@student_bp.route("/student/delete", methods=['GET', 'POST'])
+def student_delete():
+    try:
+        id = request.form.get('csasdsda')
+        student = Student.get_one(id)
+        student.delete()
+        return redirect(url_for("student_bp.student"))
+
+    except Exception as e:
+        error = f"Error: {e}"
+        return jsonify({
+            'error' : error
+        })

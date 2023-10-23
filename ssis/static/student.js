@@ -24,6 +24,30 @@ $(document).ready(function () {
         event.preventDefault();
     });
 
+    $(".delete-Student").click(function () {
+        var studentId = $(this).data("student-id");
+    
+
+        $("#deleteStudentForm").click(function () {
+            $.ajax({
+                type: "POST",
+                url: "/student/delete",
+                data: { csasdsda: studentId }
+            }).done(function (data) {
+                if (data.error) {
+                    $("#errordeletstdemsg").text(data.error).show();
+                }
+                else {
+                    alert("Sucessfully deleted student: " + studentId)
+                    window.location.href = "/student"
+    
+                }
+            });    
+        });
+
+
+      });
+
 
 
 });
