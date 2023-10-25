@@ -40,7 +40,9 @@
               required
               value="{{ request.form['edit_student_first_name'] }}"
             />
-            <label for="edit_student_first_name" class="text-secondary-emphasis fw-bold"
+            <label
+              for="edit_student_first_name"
+              class="text-secondary-emphasis fw-bold"
               >Student First Name</label
             >
           </div>
@@ -55,17 +57,19 @@
               required
               value="{{ request.form['edit_student_last_name'] }}"
             />
-            <label for="edit_student_last_name" class="text-secondary-emphasis fw-bold"
+            <label
+              for="edit_student_last_name"
+              class="text-secondary-emphasis fw-bold"
               >Student Last Name</label
             >
           </div>
           <div
-          class="alert alert-danger"
-          id="erroreditstdmsg"
-          name="erroreditstdmsg"
-          role="alert"
-          style="display: none"
-        ></div>
+            class="alert alert-danger"
+            id="erroreditstdmsg"
+            name="erroreditstdmsg"
+            role="alert"
+            style="display: none"
+          ></div>
           <div class="form-floating mb-3">
             <select
               class="form-select"
@@ -79,7 +83,9 @@
               <option value="{{course.code}}">{{course.code}}</option>
               {% endfor %}
             </select>
-            <label for="edit_student_course_code" class="text-secondary-emphasis fw-bold"
+            <label
+              for="edit_student_course_code"
+              class="text-secondary-emphasis fw-bold"
               >What Course</label
             >
           </div>
@@ -94,7 +100,9 @@
               required
               value="{{ request.form['edit_student_year'] }}"
             />
-            <label for="edit_student_year" class="text-secondary-emphasis fw-bold"
+            <label
+              for="edit_student_year"
+              class="text-secondary-emphasis fw-bold"
               >Student Year</label
             >
           </div>
@@ -111,12 +119,13 @@
               <option value="Female">Female</option>
               <option value="Other">Other</option>
             </select>
-            <label for="edit_student_gender" class="text-secondary-emphasis fw-bold"
+            <label
+              for="edit_student_gender"
+              class="text-secondary-emphasis fw-bold"
               >Gender</label
             >
           </div>
         </form>
-        
       </div>
       <div class="modal-footer">
         <button

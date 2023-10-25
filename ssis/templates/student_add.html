@@ -40,7 +40,9 @@
               required
               value="{{ request.form['name'] }}"
             />
-            <label for="student_first_name" class="text-secondary-emphasis fw-bold"
+            <label
+              for="student_first_name"
+              class="text-secondary-emphasis fw-bold"
               >Student First Name</label
             >
           </div>
@@ -55,17 +57,19 @@
               required
               value="{{ request.form['name'] }}"
             />
-            <label for="student_last_name" class="text-secondary-emphasis fw-bold"
+            <label
+              for="student_last_name"
+              class="text-secondary-emphasis fw-bold"
               >Student Last Name</label
             >
           </div>
           <div
-          class="alert alert-danger"
-          id="erroraddstdmsg"
-          name="erroraddstdmsg"
-          role="alert"
-          style="display: none"
-        ></div>
+            class="alert alert-danger"
+            id="erroraddstdmsg"
+            name="erroraddstdmsg"
+            role="alert"
+            style="display: none"
+          ></div>
           <div class="form-floating mb-3">
             <select
               class="form-select"
@@ -79,7 +83,9 @@
               <option value="{{course.code}}">{{course.code}}</option>
               {% endfor %}
             </select>
-            <label for="student_course_code" class="text-secondary-emphasis fw-bold"
+            <label
+              for="student_course_code"
+              class="text-secondary-emphasis fw-bold"
               >What Course</label
             >
           </div>
@@ -116,7 +122,6 @@
             >
           </div>
         </form>
-        
       </div>
       <div class="modal-footer">
         <button
