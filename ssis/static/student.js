@@ -56,31 +56,32 @@ $(document).ready(function () {
     $("#edit_student_year").val(year);
     $("#edit_student_gender").val(gender);
 
-    $('#editStudentForm').on("submit", function (event) {
-        $.ajax({
-            type : "POST",
-            url : "/student/edit",
-            data: {
-                pastid : id,
-                id: $("#edit_student_id").val(),
-                firstname: $("#edit_student_first_name").val(),
-                lastname: $("#edit_student_last_name").val(),
-                course_code: $("#edit_student_course_code").val(),
-                year: $("#edit_student_year").val(),
-                gender: $("#edit_student_gender").val()
-
-            }
-
-        }).done(function (data) {
-            if (data.error) {
-                $("#erroreditstdmsg").text(data.error).show();
-            }
-            else {
-                alert("Successfully edited student")
-                window.location.href = "/student"
-            }
-        });
-        event.preventDefault()
+    $("#editStudentForm").on("submit", function (event) {
+      $.ajax({
+        type: "POST",
+        url: "/student/edit",
+        data: {
+          pastid: id,
+          id: $("#edit_student_id").val(),
+          firstname: $("#edit_student_first_name").val(),
+          lastname: $("#edit_student_last_name").val(),
+          course_code: $("#edit_student_course_code").val(),
+          year: $("#edit_student_year").val(),
+          gender: $("#edit_student_gender").val(),
+        },
+      }).done(function (data) {
+        if (data.error) {
+          $("#erroreditstdmsg").text(data.error).show();
+        } else {
+          alert("Successfully edited student");
+          window.location.href = "/student";
+        }
+      });
+      event.preventDefault();
     });
+  });
+
+  $("#gobackstudent").on("click", function () {
+    window.location.href = "/student";
   });
 });

@@ -21,9 +21,38 @@
       Add Student
     </button>
     {% endif %}
+    <form
+      action="{{ url_for('student_bp.student_search') }}"
+      style="width: 50%"
+    >
+    <div class="form-floating">
+      <select class="form-select" style="width: 50%;" aria-label="Default select example" id="filter_student" name="filter_student">
+          <option selected value="0">All</option>
+          <option value="1">Student ID</option>
+          <option value="2">FirstName</option>
+          <option value="3">LastName</option>
+          <option value="4">Student Course</option>
+          <option value="5">Year</option>
+          <option value="6">Gender</option>
+        </select>
+        <label for="filter_student" class="text-secondary-emphasis fw-bold"
+        >Search By</label>
+    </div>
+      <div class="form-floating">
+        <div class="form-floating">
+          <input
+            name="querystudent"
+            class="form-control"
+            id="searchBar"
+            placeholder="Search"
+          />
+          <label for="searchBar">Search</label>
+        </div>
+      </div>
+    </form>
   </div>
 
-  {% include 'student_add.html'%} {% include 'course_add.html'%} {% if courses
+  {% include 'student_add.html'%} {% include 'course_add.html'%} {% if students
   %}
   <h2>Student List</h2>
   <table class="table table-light table-hover p-5">
@@ -79,9 +108,8 @@
         </td>
       </tr>
     </tbody>
-    {% include 'student_delete.html'%} 
-    {% include 'student_edit.html'%}
-    {% endfor %}
+    {% include 'student_delete.html'%} {% include 'student_edit.html'%} {%
+    endfor %}
   </table>
   {% elif studentInput %}
   <div class="d-flex justify-content-between flex-column align-items-center">

@@ -102,3 +102,30 @@ def student_edit():
             return jsonify({'error' : e})
         
 
+@student_bp.route("/student/search", methods=['GET','POST'])
+def student_search():
+    input = request.args.get('querystudent')
+    filter = request.args.get('filter_student')
+
+    if input:
+        students = Student.search(input,filter)
+        if not students:
+            filter_message = ""
+            if filter == "0":
+                filter_message = "Student ID or NAME or COURSE or YEAR or GENDER"
+            elif filter == "1":
+                filter_message = "Student ID"
+            elif filter == "2":
+                filter_message = "Student FirstName"
+            elif filter == "3":
+                filter_message = "Student Last Name"
+            elif filter == "4":
+                filter_message= "Student Course"
+            elif filter == "5":
+                filter_message= "Student Year"
+            elif filter == "6":
+                filter_message = "Student Gender"
+            return render_template('student_home.html', studentInput = input, search = True, hideAdd = True , filter_message=filter_message)
+        else:
+            return render_template('student_home.html', students=students, hideAdd = True, search = True, studentInput=input)
+    return redirect(url_for("student_bp.student"))
