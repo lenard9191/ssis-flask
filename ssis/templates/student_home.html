@@ -1,24 +1,30 @@
-{% extends "master_layout.html" %}
-{% block content %}
+{% extends "master_layout.html" %} {% block content %}
 
 <div class="container">
   <div class="d-flex justify-content-between align-items-center">
     {% if search %}
-    <button id="gobackstudent" name="gobackstudent" type="button" class="btn btn-outline-dark">
+    <button
+      id="gobackstudent"
+      name="gobackstudent"
+      type="button"
+      class="btn btn-outline-dark"
+    >
       Go Back
     </button>
-    {% endif %}
-    {% if not hideAdd %}
-    <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#addStudent">
+    {% endif %} {% if not hideAdd %}
+    <button
+      type="button"
+      class="btn btn-outline-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#addStudent"
+    >
       Add Student
     </button>
     {% endif %}
-  
   </div>
 
-  {% include 'student_add.html'%}
-
-  {% include 'course_add.html'%} {% if courses %}
+  {% include 'student_add.html'%} {% include 'course_add.html'%} {% if courses
+  %}
   <h2>Student List</h2>
   <table class="table table-light table-hover p-5">
     <thead>
@@ -45,20 +51,37 @@
         <th scope="row">{{student.year}}</th>
         <th scope="row">{{student.gender}}</th>
         <td>
-          
+          <button
+            type="button"
+            class="btn btn-outline-secondary edit-Student"
+            data-bs-toggle="modal"
+            data-bs-target="#editStudent"
+            data-student-id="{{student.id}}"
+            data-student-firstname="{{student.firstname}}"
+            data-student-lastname="{{student.lastname}}"
+            data-student-course="{{student.course_code}}"
+            data-student-year="{{student.year}}"
+            data-student-gender="{{student.gender}}"
+          >
+            Edit Student
+          </button>
         </td>
         <td>
-          <button type="button" class="btn btn-outline-danger delete-Student" data-bs-toggle="modal"
-          data-bs-target="#deleteStudent" data-student-id="{{student.id}}">
-          Delete Student
-        </button>
-          
+          <button
+            type="button"
+            class="btn btn-outline-danger delete-Student"
+            data-bs-toggle="modal"
+            data-bs-target="#deleteStudent"
+            data-student-id="{{student.id}}"
+          >
+            Delete Student
+          </button>
         </td>
       </tr>
     </tbody>
-    {% include 'student_delete.html'%}
- {%
-    endfor %}
+    {% include 'student_delete.html'%} 
+    {% include 'student_edit.html'%}
+    {% endfor %}
   </table>
   {% elif studentInput %}
   <div class="d-flex justify-content-between flex-column align-items-center">
