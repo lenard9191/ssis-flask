@@ -12,13 +12,14 @@ from ..extension import mysql
 
 
 class Student():
-    def __init__(self, id=None, firstname=None, lastname=None, course_code= None, year=None, gender=None):
+    def __init__(self, id=None, firstname=None, lastname=None, course_code= None, year=None, gender=None, college = None):
         self.id = id
         self.firstname = firstname
         self.lastname = lastname
         self.course_code = course_code
         self.year=year
         self.gender = gender
+        self.college = college
         self.connection = mysql.connection
 
     def add(self):
@@ -41,37 +42,38 @@ class Student():
         cursor.close()
 
     @classmethod
-    def search(cls, input,filter):
+    def search(cls, input, filter):
         cursor = mysql.connection.cursor()
         students = []
         if filter == "0":
-            cursor.execute("SELECT * FROM student WHERE id LIKE %s OR firstname LIKE %s OR lastname LIKE %s OR course_code LIKE %s OR year LIKE %s OR gender LIKE %s", (f"%{input}%",f"%{input}%",f"%{input}%",f"%{input}%",f"%{input}%",f"%{input}%"))
-        elif filter =="1":
-            cursor.execute("SELECT * from student WHERE id LIKE %s", (f"%{input}%",))
-        elif filter =="2":
-            cursor.execute("SELECT * from student WHERE firstname LIKE %s", (f"%{input}%",))
-        elif filter =="3":
-            cursor.execute("SELECT * from student WHERE lastname LIKE %s", (f"%{input}%",))
-        elif filter =="4":
-            cursor.execute("SELECT * from student WHERE course_code LIKE %s", (f"%{input}%",))
-        elif filter =="5":
-            cursor.execute("SELECT * from student WHERE year LIKE %s", (f"%{input}%",))
-        elif filter =="6":
-            cursor.execute("SELECT * from student WHERE gender=%s", (f"{input}",))
+            cursor.execute("SELECT student.id, student.firstname, student.lastname, student.course_code, student.year, student.gender, course.college_code FROM student INNER JOIN course ON student.course_code = course.code INNER JOIN college ON course.college_code = college.code WHERE student.id LIKE %s OR student.firstname LIKE %s OR student.lastname LIKE %s OR student.course_code LIKE %s OR student.year LIKE %s OR student.gender LIKE %s", (f"%{input}%", f"%{input}%", f"%{input}%", f"%{input}%", f"%{input}%", f"%{input}%"))
+        elif filter == "1":
+            cursor.execute("SELECT student.id, student.firstname, student.lastname, student.course_code, student.year, student.gender, course.college_code FROM student INNER JOIN course ON student.course_code = course.code INNER JOIN college ON course.college_code = college.code WHERE student.id LIKE %s", (f"%{input}%",))
+        elif filter == "2":
+            cursor.execute("SELECT student.id, student.firstname, student.lastname, student.course_code, student.year, student.gender, course.college_code FROM student INNER JOIN course ON student.course_code = course.code INNER JOIN college ON course.college_code = college.code WHERE student.firstname LIKE %s", (f"%{input}%",))
+        elif filter == "3":
+            cursor.execute("SELECT student.id, student.firstname, student.lastname, student.course_code, student.year, student.gender, course.college_code FROM student INNER JOIN course ON student.course_code = course.code INNER JOIN college ON course.college_code = college.code WHERE student.lastname LIKE %s", (f"%{input}%",))
+        elif filter == "4":
+            cursor.execute("SELECT student.id, student.firstname, student.lastname, student.course_code, student.year, student.gender, course.college_code FROM student INNER JOIN course ON student.course_code = course.code INNER JOIN college ON course.college_code = college.code WHERE student.course_code LIKE %s", (f"%{input}%",))
+        elif filter == "5":
+            cursor.execute("SELECT student.id, student.firstname, student.lastname, student.course_code, student.year, student.gender, course.college_code FROM student INNER JOIN course ON student.course_code = course.code INNER JOIN college ON course.college_code = college.code WHERE student.year LIKE %s", (f"%{input}%",))
+        elif filter == "6":
+            cursor.execute("SELECT student.id, student.firstname, student.lastname, student.course_code, student.year, student.gender, course.college_code FROM student INNER JOIN course ON student.course_code = course.code INNER JOIN college ON course.college_code = college.code WHERE student.gender = %s", (f"{input}",))
         for student_data in cursor.fetchall():
-            student = Student(id = student_data[0] , firstname = student_data[1], lastname=student_data[2], course_code=student_data[3], year=student_data[4], gender=student_data[5],)
+            student = Student(id=student_data[0], firstname=student_data[1], lastname=student_data[2], course_code=student_data[3], year=student_data[4], gender=student_data[5], college=student_data[6])
             students.append(student)
         cursor.close()
         return students
 
 
+
     @classmethod
     def get_all(cls,table_name = 'student'):
         cursor = mysql.connection.cursor()
-        cursor.execute(f"SELECT * FROM {table_name}")
+        cursor.execute(f"SELECT student.id, student.firstname, student.lastname, student.course_code, student.year, student.gender, course.college_code FROM student INNER JOIN course ON student.course_code = course.code INNER JOIN college ON course.college_code = college.code")
         student = []
         for student_data in cursor.fetchall():
-            courses = Student(id = student_data[0] , firstname = student_data[1], lastname=student_data[2], course_code=student_data[3], year=student_data[4], gender=student_data[5])
+            courses = Student(id = student_data[0] , firstname = student_data[1], lastname=student_data[2], course_code=student_data[3], year=student_data[4], gender=student_data[5], college=student_data[6])
             student.append(courses)
         cursor.close()
         return student

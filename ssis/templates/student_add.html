@@ -13,6 +13,13 @@
         <h1 class="modal-title fs-5" id="addStudentLabel">Add Student</h1>
       </div>
       <div class="modal-body">
+        <div
+            class="alert alert-danger"
+            id="erroraddstdmsg"
+            name="erroraddstdmsg"
+            role="alert"
+            style="display: none"
+          ></div>
         <form id="addStudentForm" autocomplete="off">
           <div class="form-floating mb-3">
             <input
@@ -63,13 +70,7 @@
               >Student Last Name</label
             >
           </div>
-          <div
-            class="alert alert-danger"
-            id="erroraddstdmsg"
-            name="erroraddstdmsg"
-            role="alert"
-            style="display: none"
-          ></div>
+          
           <div class="form-floating mb-3">
             <select
               class="form-select"
