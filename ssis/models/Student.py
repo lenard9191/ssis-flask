@@ -57,7 +57,7 @@ class Student():
         elif filter =="5":
             cursor.execute("SELECT * from student WHERE year LIKE %s", (f"%{input}%",))
         elif filter =="6":
-            cursor.execute("SELECT * from student WHERE gender LIKE %s", (f"%{input}%",))
+            cursor.execute("SELECT * from student WHERE gender=%s", (f"{input}",))
         for student_data in cursor.fetchall():
             student = Student(id = student_data[0] , firstname = student_data[1], lastname=student_data[2], course_code=student_data[3], year=student_data[4], gender=student_data[5],)
             students.append(student)
