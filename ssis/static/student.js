@@ -20,6 +20,7 @@ $(document).ready(function () {
 
 
   $("#addStudentForm").on("submit", function (event) {
+    const preview2 = document.querySelector('#photo-preview');
     $('body').append('<div class="loading-overlay"> <div class="spinner-border me-3" style="width: 3rem; height: 3rem;"> <span class="visually-hidden">Loading...</span></div><h2> Adding Student \n This should only take a minute... </h2></div>');
     $.ajax({
       type: "POST",
@@ -31,6 +32,8 @@ $(document).ready(function () {
       $('.loading-overlay').remove();
       if (data.error) {
         $("#erroraddstdmsg").text(data.error).show();
+        preview2.setAttribute('src' , urlimg)
+
       } else {
         alert("Successfully added student");
         window.location.href = "/student";
@@ -98,6 +101,7 @@ $(document).ready(function () {
         $('.loading-overlay').remove();
         if (data.error) {
           $("#erroreditstdmsg").text(data.error).show();
+          preview.setAttribute('src' , urlimg)
         } else {
           alert("Successfully edited student");
           window.location.href = "/student";

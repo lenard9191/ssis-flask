@@ -70,7 +70,7 @@ class Student():
     @classmethod
     def get_all(cls,table_name = 'student'):
         cursor = mysql.connection.cursor()
-        cursor.execute(f"SELECT student.id, student.firstname, student.lastname, student.course_code, student.year, student.gender, course.college_code , student.picture FROM student INNER JOIN course ON student.course_code = course.code INNER JOIN college ON course.college_code = college.code")
+        cursor.execute(f"SELECT student.id, student.firstname, student.lastname, student.course_code, student.year, student.gender, course.college_code , student.picture FROM student INNER JOIN course ON student.course_code = course.code INNER JOIN college ON course.college_code = college.code ORDER BY student.id")
         student = []
         for student_data in cursor.fetchall():
             courses = Student(id = student_data[0] , firstname = student_data[1], lastname=student_data[2], course_code=student_data[3], year=student_data[4], gender=student_data[5], college=student_data[6], picture = student_data[7])

@@ -13,6 +13,13 @@
         <h1 class="modal-title fs-5" id="editStudentLabel">Edit Student</h1>
       </div>
       <div class="modal-body">
+        <div
+            class="alert alert-danger"
+            id="erroreditstdmsg"
+            name="erroreditstdmsg"
+            role="alert"
+            style="display: none"
+          ></div>
         <form id="editStudentForm" autocomplete="off" enctype="multipart/form-data">
           <div class="mb-3 d-flex flex-column justify-content-center text-center">
             <img src="{{ student.picture if student.picture is not none else url_for('static', filename='picture.png') }}" class="img rounded-pill align-self-center" id="edit_photo_preview" style="width: 100px; height: 100px; object-fit: cover; object-position: center;"> 
@@ -71,13 +78,6 @@
               >Student Last Name</label
             >
           </div>
-          <div
-            class="alert alert-danger"
-            id="erroreditstdmsg"
-            name="erroreditstdmsg"
-            role="alert"
-            style="display: none"
-          ></div>
           <div class="form-floating mb-3">
             <select
               class="form-select"
@@ -139,8 +139,10 @@
         <button
           type="button"
           class="btn btn-outline-dark fs-5"
+          id="closemodal"
           data-bs-target="#editStudent"
           data-bs-dismiss="modal"
+          onclick="reloadPage()"
         >
           Close
         </button>
@@ -155,3 +157,9 @@
     </div>
   </div>
 </div>
+
+<script>
+  function reloadPage() {
+    window.location.reload()
+  }
+</script>

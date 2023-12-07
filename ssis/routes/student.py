@@ -25,6 +25,14 @@ def get_public_id_from_url(url):
     match = re.search(r'/v\d+/(ssis/[^/]+)\.\w+', url)
     return match.group(1) if match else None
 
+def check_file_size(picture):
+    maxsize = 1 * 1024 * 1024
+
+    if picture and picture.content_length > 0 and picture.content_length <= maxsize:
+        return True
+    else:
+        return False
+
 @student_bp.route("/")
 @student_bp.route("/student")
 def student():
@@ -56,6 +64,8 @@ def student_add():
     else :
         try:
             student = Student(id=id,firstname=firstname,lastname=lastname,course_code=course_code,year=year,gender=gender)
+            if not check_file_size(picture):
+                return jsonify({'error': 'Max Size Limit is: 1mb' })
             if picture and allowed_file(picture.filename):
                 result = upload(picture, folder= Config.CLOUDINARY_FOLDER)
                 student.picture = result['secure_url']
@@ -108,6 +118,8 @@ def student_edit():
         else:
             try:
                 student = Student(id=id,firstname=firstname,lastname=lastname,course_code=course_code,year=year,gender=gender)
+                if not check_file_size(picture):
+                    return jsonify({'error': 'Max Size Limit is: 1mb' })
                 if picture and allowed_file(picture.filename):
                     if student.picture:
                         public_id = get_public_id_from_url(student.picture)
@@ -127,6 +139,8 @@ def student_edit():
             student.course_code = course_code
             student.year = year
             student.gender = gender
+            if not check_file_size(picture):
+                return jsonify({'error': 'Max Size Limit is: 1mb or 1024kb' })
             if picture and allowed_file(picture.filename):
                 if student.picture:
                     public_id = get_public_id_from_url(student.picture)
