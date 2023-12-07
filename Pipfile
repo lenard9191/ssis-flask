@@ -8,6 +8,7 @@ flask = "*"
 python-dotenv = "*"
 flask-mysqldb = "*"
 jinja2 = "*"
+cloudinary = "*"
 
 [dev-packages]
 

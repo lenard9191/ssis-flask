@@ -78,7 +78,9 @@
     {% for student in students %}
     <tbody>
       <tr>
-        <th scope="row">{{student.id}}</th>
+        <th scope="row">
+          <img src="{{ student.picture if student.picture is not none else url_for('static', filename='picture.png') }}" class="img rounded-pill" id="photo-preview" style="width: 50px; height: 50px; object-fit: cover; object-position: center;"> <p>{{student.id}}</p>
+        </th>
         <th scope="row">{{student.firstname}}</th>
         <th scope="row">{{student.lastname}}</th>
         <th scope="row">{{student.course_code}}</th>
@@ -97,6 +99,7 @@
             data-student-course="{{student.course_code}}"
             data-student-year="{{student.year}}"
             data-student-gender="{{student.gender}}"
+            data-student-picture="{{student.picture}}"
           >
             Edit Student
           </button>
@@ -131,5 +134,25 @@
   {% endif %}
 </div>
 
+<style>
+
+  .loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  z-index: 99999;
+  align-items: center;
+  justify-content: center;
+}
+
+</style>
+
+<script>
+  const urlimg = "{{ url_for('static', filename='picture.png') }}";
+</script>
 <script src="{{ url_for('static', filename='student.js') }}"></script>
 {% endblock %}

@@ -1,5 +1,4 @@
 from ..extension import mysql
-
 # CREATE TABLE IF NOT EXISTS student (
 # 	id VARCHAR(20) PRIMARY KEY,
 #     firstname VARCHAR(255) NOT NULL,
@@ -12,7 +11,7 @@ from ..extension import mysql
 
 
 class Student():
-    def __init__(self, id=None, firstname=None, lastname=None, course_code= None, year=None, gender=None, college = None):
+    def __init__(self, id=None, firstname=None, lastname=None, course_code= None, year=None, gender=None, college = None, picture = None):
         self.id = id
         self.firstname = firstname
         self.lastname = lastname
@@ -21,17 +20,18 @@ class Student():
         self.gender = gender
         self.college = college
         self.connection = mysql.connection
+        self.picture = picture
 
     def add(self):
         cursor = self.connection.cursor()
-        cursor.execute(" INSERT INTO student (id, firstname, lastname, course_code, year, gender) VALUES (%s, %s, %s, %s, %s, %s)",
-                            (self.id, self.firstname,self.lastname, self.course_code, self.year, self.gender))
+        cursor.execute(" INSERT INTO student (id, firstname, lastname, course_code, year, gender, picture) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+                            (self.id, self.firstname,self.lastname, self.course_code, self.year, self.gender,self.picture))
         self.connection.commit()
         cursor.close()
     
     def update(self,id):
         cursor = self.connection.cursor()
-        cursor.execute("UPDATE student SET id=%s, firstname=%s, lastname=%s, course_code=%s, year=%s, gender=%s WHERE id=%s" , (self.id, self.firstname,self.lastname, self.course_code, self.year, self.gender,id))
+        cursor.execute("UPDATE student SET id=%s, firstname=%s, lastname=%s, course_code=%s, year=%s, gender=%s , picture=%s WHERE id=%s" , (self.id, self.firstname,self.lastname, self.course_code, self.year, self.gender,self.picture,id))
         self.connection.commit()
         cursor.close()
 
@@ -70,10 +70,10 @@ class Student():
     @classmethod
     def get_all(cls,table_name = 'student'):
         cursor = mysql.connection.cursor()
-        cursor.execute(f"SELECT student.id, student.firstname, student.lastname, student.course_code, student.year, student.gender, course.college_code FROM student INNER JOIN course ON student.course_code = course.code INNER JOIN college ON course.college_code = college.code")
+        cursor.execute(f"SELECT student.id, student.firstname, student.lastname, student.course_code, student.year, student.gender, course.college_code , student.picture FROM student INNER JOIN course ON student.course_code = course.code INNER JOIN college ON course.college_code = college.code")
         student = []
         for student_data in cursor.fetchall():
-            courses = Student(id = student_data[0] , firstname = student_data[1], lastname=student_data[2], course_code=student_data[3], year=student_data[4], gender=student_data[5], college=student_data[6])
+            courses = Student(id = student_data[0] , firstname = student_data[1], lastname=student_data[2], course_code=student_data[3], year=student_data[4], gender=student_data[5], college=student_data[6], picture = student_data[7])
             student.append(courses)
         cursor.close()
         return student
@@ -94,7 +94,7 @@ class Student():
         cursor.close
 
         if student_data:
-            return Student(id = student_data[0] , firstname = student_data[1], lastname=student_data[2], course_code=student_data[3], year=student_data[4], gender=student_data[5])
+            return Student(id = student_data[0] , firstname = student_data[1], lastname=student_data[2], course_code=student_data[3], year=student_data[4], gender=student_data[5], picture=student_data[6])
         else:
             return None
 

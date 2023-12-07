@@ -21,5 +21,6 @@ CREATE TABLE IF NOT EXISTS student (
     course_code VARCHAR(20) NOT NULL,
     year VARCHAR(255) NOT NULL,
     gender ENUM('Male', 'Female', 'Other') NOT NULL,
+    picture VARCHAR(255),
     FOREIGN KEY (course_code) REFERENCES course(code) ON DELETE CASCADE ON UPDATE CASCADE
 );

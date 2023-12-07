@@ -6,11 +6,24 @@ from ..models.Course import Course
 from ..models.College import College
 from ..models.Student import Student
 
+from cloudinary import uploader
+from cloudinary.uploader import upload
+from config import Config
+import re
 
 student_bp = Blueprint(
     "student_bp",
     __name__,
 )
+
+ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg"}
+
+def allowed_file(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
+
+def get_public_id_from_url(url):
+    match = re.search(r'/v\d+/(ssis/[^/]+)\.\w+', url)
+    return match.group(1) if match else None
 
 @student_bp.route("/")
 @student_bp.route("/student")
@@ -23,15 +36,15 @@ def student():
 
 @student_bp.route("/student/add", methods=['POST'])
 def student_add():
-    id = request.form.get('id')
-    firstname = request.form.get('firstname')
-    lastname = request.form.get('lastname')
-    course_code = request.form.get('course_code')
-    year = request.form.get('year')
-    gender = request.form.get('gender')
+    id = request.form.get('student_id')
+    firstname = request.form.get('student_first_name')
+    lastname = request.form.get('student_last_name')
+    course_code = request.form.get('student_course_code')
+    year = request.form.get('student_year')
+    gender = request.form.get('student_gender')
+    picture = request.files['formFile']
 
-    error = f"{id} {firstname} {lastname} {course_code} {year} {gender}"
-
+    error = f"{id} {firstname} {lastname} {course_code} {year} {gender} {picture.filename}"
 
     exist_student = Student.check_existing_id(id)
 
@@ -43,6 +56,11 @@ def student_add():
     else :
         try:
             student = Student(id=id,firstname=firstname,lastname=lastname,course_code=course_code,year=year,gender=gender)
+            if picture and allowed_file(picture.filename):
+                result = upload(picture, folder= Config.CLOUDINARY_FOLDER)
+                student.picture = result['secure_url']
+            else :
+                return jsonify({ 'error': 'Image is required and pictures only'})
             student.add()
             return redirect(url_for("student_bp.student"))
         except Exception as e:
@@ -56,6 +74,9 @@ def student_delete():
     try:
         id = request.form.get('csasdsda')
         student = Student.get_one(id)
+        if student.picture:
+            public_id = get_public_id_from_url(student.picture)
+            result = uploader.destroy(public_id)
         student.delete()
         return redirect(url_for("student_bp.student"))
     except Exception as e:
@@ -68,14 +89,16 @@ def student_delete():
 @student_bp.route("/student/edit", methods=['POST'])
 def student_edit():
     pastid = request.form.get('pastid')
-    id = request.form.get('id')
-    firstname = request.form.get('firstname')
-    lastname = request.form.get('lastname')
-    course_code = request.form.get('course_code')
-    year = request.form.get('year')
-    gender = request.form.get('gender')
-    
-    
+    id = request.form.get('edit_student_id')
+    firstname = request.form.get('edit_student_first_name')
+    lastname = request.form.get('edit_student_last_name')
+    course_code = request.form.get('edit_student_course_code')
+    year = request.form.get('edit_student_year')
+    gender = request.form.get('edit_student_gender')
+    picture = request.files['editFormFile']
+
+    error = f"{pastid} {id} {firstname} {lastname} {course_code} {year} {gender} {picture.filename}"
+
     student = Student.get_one(pastid)
     if id != pastid:
         exist_student = Student.get_one(id)
@@ -85,6 +108,14 @@ def student_edit():
         else:
             try:
                 student = Student(id=id,firstname=firstname,lastname=lastname,course_code=course_code,year=year,gender=gender)
+                if picture and allowed_file(picture.filename):
+                    if student.picture:
+                        public_id = get_public_id_from_url(student.picture)
+                        result = uploader.destroy(public_id)
+                    result1 = upload(picture, folder= Config.CLOUDINARY_FOLDER)
+                    student.picture = result1['secure_url']
+                elif not picture and not student.picture :
+                    return jsonify({ 'error': 'Image is required and pictures only'})
                 student.update(pastid)
                 return redirect(url_for("student_bp.student"))
             except Exception as e:
@@ -96,6 +127,14 @@ def student_edit():
             student.course_code = course_code
             student.year = year
             student.gender = gender
+            if picture and allowed_file(picture.filename):
+                if student.picture:
+                    public_id = get_public_id_from_url(student.picture)
+                    result = uploader.destroy(public_id)
+                result1 = upload(picture, folder= Config.CLOUDINARY_FOLDER)
+                student.picture = result1['secure_url']
+            elif not picture and not student.picture :
+                return jsonify({ 'error': 'Image is required and pictures only'})
             student.update(id)
             return redirect(url_for("student_bp.student"))
         except Exception as e:
